@@ -38,10 +38,9 @@ class ProductHandler
     public static function getProductsByType(array $products, string $type = 'dessert', bool $isDesc = true) : array
     {
         return collect($products)
-            ->sortBy('price', SORT_NUMERIC, $isDesc)
             ->filter(function ($item) use ($type) {
                 return strtolower($item['type']) === strtolower($type);
-            })->toArray();
+            })->sortBy('price', SORT_NUMERIC, $isDesc)->toArray();
     }
 
     /**

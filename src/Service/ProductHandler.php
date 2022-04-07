@@ -25,7 +25,7 @@ class ProductHandler
         */
 
         //方法二：使用collect实现
-        return collect($products)->map(function (array $item){
+        return Collection::make($products)->map(function (array $item){
             return $item['price'];
         })->sum();
     }
@@ -37,10 +37,11 @@ class ProductHandler
      */
     public static function getProductsByType(array $products, string $type = 'dessert', bool $isDesc = true) : array
     {
-        return collect($products)
+        return Collection::make($products)
+            ->sortBy('price', SORT_NUMERIC, $isDesc)
             ->filter(function ($item) use ($type) {
                 return strtolower($item['type']) === strtolower($type);
-            })->sortBy('price', SORT_NUMERIC, $isDesc)->toArray();
+            })->toArray();
     }
 
     /**
@@ -50,7 +51,7 @@ class ProductHandler
      */
     public static function resetProductTime(array $products) : array
     {
-        return collect($products)->map(function ($item) {
+        return Collection::make($products)->map(function ($item) {
             $item['create_at'] = strtotime($item['create_at']);
             return $item;
         })->toArray();
